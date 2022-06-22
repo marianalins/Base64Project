@@ -1,0 +1,9 @@
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/base_64_project?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true"
+    username: "root"
+    password: "MariLins"
+
+server:
+  port: 8089
