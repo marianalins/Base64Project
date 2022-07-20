@@ -27,7 +27,7 @@ public class PersonServiceImpl implements PersonService{
         Person person = gson.fromJson(decodedString, Person.class);
         log.info("Object: " + person);
 
-        if(!getPersonByFullName(person).isPresent()) {
+        if(Optional.ofNullable(getPersonByFullName(person)).isEmpty()) {
             personRepository.save(person);
             return new ResponseEntity<>("Person added successfully", HttpStatus.OK);
         } else {

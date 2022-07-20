@@ -27,4 +27,5 @@ public class Person {
 
     @Column(name = "birthday")
     private String birthday;
+
 }
