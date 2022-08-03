@@ -1,9 +1,9 @@
 package com.mariana.base64project.service;
 
-import org.springframework.http.ResponseEntity;
+import com.mariana.base64project.DTO.PersonDTO;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonService {
-    ResponseEntity<String> addPerson(String base64);
+    PersonDTO addPerson(String base64);
 }

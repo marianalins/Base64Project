@@ -1,39 +1,38 @@
 package com.mariana.base64project.service;
 
 import com.google.gson.Gson;
+import com.mariana.base64project.DTO.PersonDTO;
 import com.mariana.base64project.model.Person;
 import com.mariana.base64project.repository.PersonRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Slf4j
-@Component
+@Service
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService{
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
 
-    public ResponseEntity<String> addPerson(String base64) {
-        log.info("Encoded String: {}", base64);
+    public PersonDTO addPerson(String base64) {
+        log.debug("Encoded String: {}", base64);
         String decodedString = new String(Base64.decodeBase64(base64));
-        log.info("Decoded String: {}",decodedString);
+        log.debug("Decoded String: {}",decodedString);
         Gson gson = new Gson();
         Person person = gson.fromJson(decodedString, Person.class);
-        log.info("Object: " + person);
+        log.debug("Object: " + person);
 
         if(Optional.ofNullable(getPersonByFullName(person)).isEmpty()) {
             personRepository.save(person);
-            return new ResponseEntity<>("Person added successfully", HttpStatus.OK);
+            return new PersonDTO(person.getId(), person.getFirstName(), person.getLastName(), person.getBirthday());
         } else {
-            return new ResponseEntity<>(person.getFirstName() +" " + person.getLastName() +" already exist in the system", HttpStatus.CONFLICT);
+            return null;
         }
-
     }
 
     public Optional<Person> getPersonByFullName(Person person) {

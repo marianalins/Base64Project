@@ -27,5 +27,6 @@ public class Person {
 
     @Column(name = "birthday")
     private String birthday;
+    // TODO: Mudar para DATE
 
 }
