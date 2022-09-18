@@ -18,7 +18,6 @@ public class PersonServiceImpl implements PersonService{
 
     private final PersonRepository personRepository;
 
-
     public PersonDTO addPerson(String base64) {
         log.debug("Encoded String: {}", base64);
         String decodedString = new String(Base64.decodeBase64(base64));
@@ -27,7 +26,7 @@ public class PersonServiceImpl implements PersonService{
         Person person = gson.fromJson(decodedString, Person.class);
         log.debug("Object: " + person);
 
-        if(Optional.ofNullable(getPersonByFullName(person)).isEmpty()) {
+        if(getPersonByFullName(person).isEmpty()) {
             personRepository.save(person);
             return new PersonDTO(person.getId(), person.getFirstName(), person.getLastName(), person.getBirthday());
         } else {

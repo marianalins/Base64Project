@@ -1,36 +1,35 @@
 package com.mariana.base64project.service;
 
 import com.google.gson.Gson;
+import com.mariana.base64project.DTO.AddressDTO;
 import com.mariana.base64project.model.Address;
 import com.mariana.base64project.repository.AddressRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService{
-    @Autowired
+
     AddressRepository addressRepository;
 
-    public ResponseEntity<String> addAddress(String base64) {
-        log.info("Encoded String: {}", base64);
+    public AddressDTO addAddress(String base64) {
+        log.debug("Encoded String: {}", base64);
         String decodedString = new String(Base64.decodeBase64(base64));
-        log.info("Decoded String: {}",decodedString);
+        log.debug("Decoded String: {}",decodedString);
         Gson gson = new Gson();
         Address address = gson.fromJson(decodedString, Address.class);
-        log.info("Object: " + address);
+        log.debug("Object: " + address);
 
-        if(!getAddress(address).isPresent()) {
+        if(getAddress(address).isEmpty()) {
             addressRepository.save(address);
-            return new ResponseEntity<>("Address added successfully!", HttpStatus.OK);
+            return new AddressDTO(address.getId(), address.getStreet(), address.getNumber(), address.getCity(), address.getState(), address.getCountry());
         } else {
-            return new ResponseEntity<>("This address already exist in the system", HttpStatus.CONFLICT);
+            return null;
         }
     }
 
