@@ -28,7 +28,6 @@ public class AddressServiceImplTest {
     private static final String COUNTRY = "Brazil";
 
 
-
     @Mock
     private AddressRepository addressRepository;
 

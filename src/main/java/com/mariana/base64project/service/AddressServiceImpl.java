@@ -7,6 +7,7 @@ import com.mariana.base64project.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
@@ -15,7 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService{
 
-    AddressRepository addressRepository;
+    @Autowired
+    private final AddressRepository addressRepository;
 
     public AddressDTO addAddress(String base64) {
         log.debug("Encoded String: {}", base64);

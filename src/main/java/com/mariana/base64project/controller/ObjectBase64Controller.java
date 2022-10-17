@@ -8,6 +8,7 @@ import com.mariana.base64project.service.AddressService;
 import com.mariana.base64project.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ObjectBase64Controller {
 
+    @Autowired
     private PersonService personService;
 
+    @Autowired
     private AddressService addressService;
 
     @PostMapping("/add")
@@ -33,7 +36,7 @@ public class ObjectBase64Controller {
             PersonDTO person = personService.addPerson(objectBase64.getBase64());
 
             if (person != null)  {
-                new ResponseEntity<>(person.getFirstName() + " " + person.getLastName() + " added successfully", HttpStatus.OK);
+                return new ResponseEntity<>(person.getFirstName() + " " + person.getLastName() + " added successfully", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Person already exists in the system.", HttpStatus.CONFLICT);
             }
@@ -42,13 +45,12 @@ public class ObjectBase64Controller {
             AddressDTO address = addressService.addAddress(objectBase64.getBase64());
 
             if (address != null)  {
-                new ResponseEntity<>(  "Address added successfully!", HttpStatus.OK);
+                return new ResponseEntity<>(  "Address added successfully!", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("This address already exist in the system.", HttpStatus.CONFLICT);
             }
+        } else {
+            return new ResponseEntity<>("NOT PERSON OR ADDRESS", HttpStatus.OK);
         }
-
-        return new ResponseEntity<>("NOT PERSON OR ADDRESS", HttpStatus.OK);
     }
-
 }
